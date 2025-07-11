@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>aura fragrance</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      padding: 30px;
+      background: #0D1B2A;
+      color: #F0F8FF;
+      max-width: 1000px;
+      margin: auto;
+    }
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo-img {
+  height: 40px;
+  width: 40px;
+  object-fit: contain;
+  border-radius: 8px; /* optional: rounded edges */
+}
+
+    .navbar {
+      background: linear-gradient(to right, #1B263B, #415A77);
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 255, 255, 0.2);
+      margin-bottom: 30px;
+    }
+
+    .navbar .logo {
+      color: #00B4D8;
+      font-size: 1.6rem;
+      font-weight: bold;
+    }
+
+    h1, h2, h3 {
+      color: #00FFCC;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .product-grid {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 30px;
+    }
+
+    .product-card {
+      background-color: #1B263B;
+      border: 2px solid #778DA9;
+      border-radius: 12px;
+      padding: 15px;
+      width: 220px;
+      box-shadow: 0 4px 10px rgba(0, 255, 255, 0.2);
+      text-align: center;
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .product-card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 20px rgba(0, 255, 255, 0.3);
+    }
+
+    .product-card img {
+      width: 100%;
+      height: auto;
+      border-radius: 10px;
+      margin-bottom: 10px;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 9999;
+      padding-top: 80px;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.9);
+    }
+
+    .modal-content {
+      background-color: #1B263B;
+      margin: auto;
+      padding: 20px;
+      border-radius: 15px;
+      width: 90%;
+      max-width: 400px;
+      text-align: center;
+      box-shadow: 0 6px 20px rgba(0,255,255,0.2);
+      color: #F0F8FF;
+    }
+
+    .modal-content img {
+      width: 100%;
+      height: auto;
+      border-radius: 10px;
+      margin-bottom: 15px;
+    }
+
+    .modal p {
+      font-size: 18px;
+      margin-bottom: 15px;
+    }
+
+    .modal input {
+      width: 60%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 2px solid #00B4D8;
+      border-radius: 8px;
+      background-color: #415A77;
+      color: #fff;
+    }
+
+    .modal button {
+      background: #00B4D8;
+      color: white;
+      padding: 10px 20px;
+      font-weight: bold;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background 0.3s ease;
+    }
+
+    .modal button:hover {
+      background: #00FFCC;
+      color: #0D1B2A;
+    }
+
+    .close {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      color: white;
+      font-size: 30px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    #result {
+      margin-top: 20px;
+      font-size: 1.2rem;
+      text-align: center;
+      font-weight: bold;
+      color: #00FFCC;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="logo">
+  <img src="logo.png" alt="Aura Logo" class="logo-img">
+  AURA Fragrance
+</div>
+
+  </nav>
+
+  <div id="products" class="product-grid">
+    <div class="product-card" onclick="showProduct('AURA pocket perfume', 'aura-black.png', 199)">
+      <img src="aura-black.png" alt="AURA pocket perfume">
+      <h3>AURA pocket perfume</h3>
+      <p>AURA pocket perfume for Men (Black)</p>
+      <p>Price: Rs. 199</p>
+    </div>
+
+    <div class="product-card" onclick="showProduct('AURA pocket perfume', 'aura-white.png', 199)">
+      <img src="aura-white.png" alt="AURA pocket perfume">
+      <h3>AURA pocket perfume</h3>
+      <p>AURA pocket perfume for Men (White)</p>
+      <p>Price: Rs. 199</p>
+    </div>
+  </div>
+
+  <div id="result"></div>
+
+  <div id="product-modal" class="modal">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <div class="modal-content" id="modal-content">
+      <!-- JS fills content -->
+    </div>
+  </div>
+
+  <script>
+  function showProduct(name, image, price) {
+    const modal = document.getElementById('product-modal');
+    const content = document.getElementById('modal-content');
+    content.innerHTML = `
+      <img src="${image}" alt="${name}">
+      <h3>${name}</h3>
+      <p>Price: Rs. ${price}</p>
+      <input type="number" id="modal-qty" placeholder="Enter quantity" min="1">
+      <button onclick="buyProduct('${name}', ${price})">Buy Now</button>
+    `;
+    modal.style.display = 'block';
+  }
+
+  function closeModal() {
+    document.getElementById('product-modal').style.display = 'none';
+  }
+
+  function buyProduct(name, price) {
+    const qty = parseInt(document.getElementById('modal-qty').value);
+    const result = document.getElementById('result');
+
+    if (!qty || qty < 1) {
+      result.textContent = '? Please enter a valid quantity.';
+      result.style.color = 'red';
+      return;
+    }
+
+    const total = qty * price;
+    const phone = "923347336229";
+    const message = `I want to buy ${qty} x ${name} (Rs. ${price} each). Total: Rs. ${total}`;
+    const encodedMessage = encodeURIComponent(message);
+
+    // Deep link to WhatsApp app
+    const whatsappAppUrl = `whatsapp://send?phone=${phone}&text=${encodedMessage}`;
+    // Fallback to WhatsApp Web
+    const whatsappWebUrl = `https://web.whatsapp.com/send?phone=${phone}&text=${encodedMessage}`;
+
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+    if (isMobile) {
+      // Try to open WhatsApp app
+      window.location.href = whatsappAppUrl;
+
+      // Fallback to web if app is not available
+      setTimeout(() => {
+        window.open(whatsappWebUrl, '_blank');
+      }, 1500);
+    } else {
+      // On desktop, go to WhatsApp Web directly
+      window.open(whatsappWebUrl, '_blank');
+    }
+
+    closeModal();
+  }
+
+  window.onclick = function(event) {
+    const modal = document.getElementById('product-modal');
+    if (event.target === modal) {
+      modal.style.display = 'none';
+    }
+  };
+</script>
+</body>
+</html>
